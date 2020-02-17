@@ -18,7 +18,9 @@ const UserSchema = new Schema({
   avatar: {
     type: String
   },
-  account: [{ type: Schema.Types.ObjectId, ref: "Account" }],
+  account: [{ 
+    type: Schema.Types.ObjectId, ref: "Account" 
+  }],
   id_country: {
     type: String
   },

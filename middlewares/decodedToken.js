@@ -7,7 +7,7 @@ function decodedToken(req,res,next) {
         req.decoded = decoded;
         next();
     }else {
-        next({message: `You must login first as user`})
+        res.status(404).json({message: 'You must login first as user'}); 
     }
 };
 

@@ -10,7 +10,7 @@ module.exports = {
   new_account: async (req, res) => {
     
     const userId = req.decoded.id;
-    console.log(userId)
+    
     let ethData;
     let newAccount = new Account({
       ETH: req.body.ETH,

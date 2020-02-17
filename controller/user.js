@@ -7,6 +7,8 @@ const validateLoginInput = require("../validation/login");
 
 const User = require("../models/User");
 
+
+
 module.exports = {
   addUser: (req, res) => {
     const { errors, isValid } = validateRegisterInput(req.body);
@@ -95,8 +97,11 @@ module.exports = {
       });
     });
   },
+
+
+  
   getAuth: (req, res) => {
-    console.log(req.user);
+    let userId = req.decoded.id
     
     passport.authenticate("jwt", { session: false }),
       (req, res) => {
@@ -107,6 +112,9 @@ module.exports = {
         });
       };
   },
+
+
+
   getAll: (req, res) => {
     User.find((error, result) => {
       if (error) {
@@ -121,5 +129,20 @@ module.exports = {
         });
       }
     }).populate("account");
+  },
+
+
+
+  getOne: (req,res,next) => {
+    let userId = req.decoded.id;
+    User.findOne({_id: userId}).populate('account')
+      .then(function(user) {
+        res.status(200).json(user);
+      })
+      .catch(err => {
+        res.status(404).json({message: 'Ini error'})
+      })
   }
+
+
 };
