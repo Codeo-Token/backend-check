@@ -5,7 +5,7 @@ const { PORT } = require("./config/variabelEnv");
 const users = require('./routes/user'); 
 const account = require('./routes/account.route');
 const dotenv = require('dotenv');
-
+const cors = require('cors');
 
 if(process.env.NODE_ENV === 'development' && !process.env.NODE_ENV === 'development') {
   require(dotenv.config());
@@ -29,9 +29,9 @@ const Port = PORT || 3000;
 app.use(passport.initialize());
 require('./passport')(passport);
 
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-
+app.use(cors())
 app.use('/users', users);
 
 app.use('/account', account);
@@ -39,7 +39,6 @@ app.use('/account', account);
 app.get('/', function(req, res) {
     res.send('hello');
 });
-
 
 app.listen(Port, () => {
     console.log(`Server is running on PORT ${Port}`);

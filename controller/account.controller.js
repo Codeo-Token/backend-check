@@ -8,6 +8,9 @@ const User = require("../models/User");
 
 module.exports = {
   new_account: async (req, res) => {
+    
+    const userId = req.decoded.id;
+    console.log(userId)
     let ethData;
     let newAccount = new Account({
       ETH: req.body.ETH,
@@ -22,7 +25,7 @@ module.exports = {
     //save account object to the database
     const eth = await newAccount.save()
     const user = await User.findOneAndUpdate(
-      { _id: req.params._id },
+      { _id: userId },
       { $push: { account: eth._id} },
       { new: true }
     );

@@ -45,6 +45,9 @@ module.exports = {
       }
     });
   },
+
+
+
   login: (req, res) => {
     const { errors, isValid } = validateLoginInput(req.body);
 
@@ -67,9 +70,11 @@ module.exports = {
             name: user.name,
             email: user.email
           };
+
+
           jwt.sign(
             payload,
-            "secret",
+            process.env.SECRET,
             {
               expiresIn: 3600
             },
