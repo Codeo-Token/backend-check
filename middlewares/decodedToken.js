@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 const { verifyToken } = require('../helpers/jwt');
 
-function decodedToken(req,res,next) {
+function authentification(req,res,next) {
     if (req.headers.jwttoken) {       
         const decoded = verifyToken(req.headers.jwttoken)
         req.decoded = decoded;
@@ -12,5 +12,5 @@ function decodedToken(req,res,next) {
 };
 
 module.exports = {
-    decodedToken
-}
+    authentification
+};

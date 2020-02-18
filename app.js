@@ -1,21 +1,24 @@
+//Dependencies;
 const express = require('express');
-const bodyParser = require('body-parser');
-const passport = require('passport');
-const { PORT } = require("./config/variabelEnv");
-const users = require('./routes/user'); 
-const account = require('./routes/account.route');
-const dotenv = require('dotenv');
+const app = express();
 const cors = require('cors');
+const mongoose = require('mongoose');
+const passport = require('passport');
+const dotenv = require('dotenv');
 
-if(process.env.NODE_ENV === 'development' && !process.env.NODE_ENV === 'development') {
-  require(dotenv.config());
-};
+if (process.env.NODE_ENV === 'development' || !process.env.NODE_ENV === 'development') {
+  dotenv.config();
+}
+//PORT
+const PORT = process.env.PORT;
 
-var mongoose = require('mongoose');
+//ROUTER
+const mainRouter = require('./routes');
+const errHandler = require('./middlewares/errHandler');
+
 mongoose.connect(process.env.MONGOOSE_CONNECTION, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
-  userFindAndModify: false
 });
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
@@ -23,24 +26,19 @@ db.once('open', function() {
   console.log('Welcome to mongoDB')
 });
 
-const app = express();
-const Port = PORT || 3000;
-
+//APP-USE;
+app.use(cors());
+app.use(express.urlencoded({extended: false}));
 app.use(passport.initialize());
 require('./passport')(passport);
 
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
-app.use(cors())
-app.use('/users', users);
 
-app.use('/account', account);
- 
-app.get('/', function(req, res) {
-    res.send('hello');
-});
+//Router that used;
+app.use(mainRouter);
 
-app.listen(Port, () => {
-    console.log(`Server is running on PORT ${Port}`);
-  });
-  
+//Errhandler;
+app.use(errHandler);
+
+app.listen(PORT, () => {
+  console.log(`Server started on ${PORT}`);
+})

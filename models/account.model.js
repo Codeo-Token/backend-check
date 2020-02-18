@@ -6,16 +6,18 @@ const Schema = mongoose.Schema;
 let AccountSchema = new Schema({
   ETH: {
     type: String,
-    required: false,
     max: 64
   },
   key: {
     type: Map,
-    require: false
   },
   date: {
     type: Date,
     default: Date.now
+  },
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
   }
 });
 
