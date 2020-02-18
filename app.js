@@ -30,7 +30,7 @@ db.once('open', function() {
 app.use(cors());
 app.use(express.urlencoded({extended: false}));
 app.use(passport.initialize());
-require('./passport')(passport);
+// require('./passport')(passport);
 
 
 //Router that used;
